@@ -1,0 +1,94 @@
+openapi: 3.0.2
+info:
+    title: BideoGamTARge23
+    version: 1.0.0
+    description: games api
+paths:
+    /games:
+        get:
+            tags:
+                - games
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    type: string
+                            examples:
+                                List of games:
+                                    value:
+                                        - Throne & Liberty
+                                        - Goat Simulator
+                                        - Team Fortress 2
+                    description: Returns a list of games
+            summary: get list of all games from api
+            description: Returns a list of all games in the API to the requesting user.
+    '/games/{id}':
+        get:
+            tags:
+                - games
+            parameters:
+                -
+                    examples:
+                        Example of id of Game:
+                            value: '1'
+                    name: id
+                    description: Id of Game the user has requested
+                    schema:
+                        type: integer
+                    in: path
+                    required: true
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    type: string
+                            examples:
+                                Example of a game with details:
+                                    value:
+                                        GameID: 3
+                                        GameName: Team Fortress 2
+                                        ReleaseDateEU: 01.01.2007
+                                        ReviewScore: 10
+                    description: Returns details of a Game to the user
+                '400':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                            examples:
+                                Invalid game id:
+                                    value:
+                                        -
+                                            error: Invalid id inserted
+                    description: Return status code 400 to the user if an invalid id was entered
+                '404':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/error'
+                            examples:
+                                Game /w+ was not found:
+                                    value:
+                                        -
+                                            error: Game\w+ was not found in game array
+                    description: Return error 404 to the user if Game with this id is not found
+            operationId: id
+            summary: Get full details of a game
+            description: Returns full details of a given id game
+components:
+    schemas:
+        error:
+            title: Root Type for error
+            description: ''
+            type: object
+            properties:
+                error:
+                    type: string
+            example:
+                error: Error message.
